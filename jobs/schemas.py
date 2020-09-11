@@ -22,8 +22,8 @@ class Jobs(JobBase):
 
 
 class ApplicationBase(BaseModel):
-    name: str
-    email: str
+    job_id: int
+    canditate_id: int
 
 
 class ApplicationCreate(ApplicationBase):
@@ -32,7 +32,25 @@ class ApplicationCreate(ApplicationBase):
 
 class Jobapply(ApplicationBase):
     id: int
-    job_id: int
+    
+    
+
+    class Config:
+        orm_mode = True
+
+
+class CanditateBase(BaseModel):
+    name: str
+    email: str
+    
+
+
+class CanditateCreate(CanditateBase):
+    pass
+
+
+class Candidate(CanditateBase):
+    id: int
 
     class Config:
         orm_mode = True

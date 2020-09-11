@@ -27,11 +27,18 @@ def create_job(job: schemas.JobCreate, db: Session = Depends(get_db)):
     return crud.create_job(db=db, job=job)
 
 
-@app.post("/jobs/{job_id}/apply/", response_model=schemas.Jobapply)
+@app.post("/jobs/{job_id}/apply/{canditate_id}", response_model=schemas.Jobapply)
 def apply_job_for_user(
-    job_id: int, item: schemas.ApplicationCreate, db: Session = Depends(get_db)
+    item: schemas.ApplicationCreate, db: Session = Depends(get_db)
 ):
-    return crud.apply_job(db=db, item=item, job_id=job_id)
+    canditate = crud.apply_job(db=db, item=item)
+    if not canditate:
+        raise HTTPException(status_code=404, detail=f"Not a candiate. Please signup and apply again")
+    return canditate
+
+@app.post("/canditates", response_model=schemas.Candidate)
+def signup_canditate(canditate: schemas.CanditateCreate, db: Session = Depends(get_db)):
+    return crud.signup_canditate(db=db, canditate=canditate)
 
 
 
@@ -52,7 +59,10 @@ def read_job(job_id: int, db: Session = Depends(get_db)):
 
 
 
-
+@app.get("/canditates", response_model=List[schemas.Candidate])
+def get_canditates(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    canditates = crud.get_canditates(db, skip=skip, limit=limit)
+    return canditates
 
 @app.get("/jobs/", response_model=List[schemas.Jobs])
 def read_jobs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -63,3 +73,4 @@ def read_jobs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 def applied_jobs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     applied_jobs = crud.get_appliedjobs(db, skip=skip, limit=limit)
     return applied_jobs
+

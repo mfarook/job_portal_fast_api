@@ -19,8 +19,14 @@ class Jobapply(Base):
     __tablename__ = "jobapply"
 
     id = Column(Integer, primary_key=True, index=True)
+    job_id = Column(Integer, ForeignKey("jobs.id"))
+    canditate_id = Column(Integer, ForeignKey("canditate.id"))
+
+class Canditate(Base):
+    __tablename__ = "canditate"
+
+    id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     email = Column(String, index=True)
-    job_id = Column(Integer, ForeignKey("jobs.id"))
 
     
