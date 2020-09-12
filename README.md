@@ -34,13 +34,11 @@ end url: http://127.0.0.1:8000/jobs/2
 
 method: post
 
-end url: /jobs/{job_id}/apply
+end url: /jobs/{job_id}/apply/{canditate_id}
 
-params: {job_id}
-
-request params: {
-  "name": "string",
-  "email": "string"
+request body: {
+  "job_id": int,
+  "canditate_id": int
 }
 
 # view applied jobs
@@ -48,6 +46,24 @@ request params: {
 method: get
 
 end url: http://127.0.0.1:8000/appliedjobs/
+
+#  get canditates
+
+method: get
+
+end url: http://127.0.0.1:8000/canditates
+
+# sign up canditates
+
+method: post
+
+end url: /canditates
+
+request_body: {
+  "name": "string",
+  "email": "string"
+}
+
 
 
 
